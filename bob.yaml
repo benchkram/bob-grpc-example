@@ -1,0 +1,16 @@
+nixpkgs: https://github.com/NixOS/nixpkgs/archive/nixos-22.11.tar.gz
+
+dependencies: [
+  go_1_20,
+  protobuf,
+  protoc-gen-go,
+  protoc-gen-go-grpc,
+]
+
+build:
+  proto:
+    input: example.proto
+    cmd: |
+      mkdir -p pkg/proto/example
+      protoc --go_out=. --go-grpc_out=. example.proto
+    target: pkg/proto/example
