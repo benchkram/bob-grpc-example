@@ -8,9 +8,33 @@ dependencies: [
 ]
 
 build:
+  build:
+    dependsOn:
+      - client
+      - server
   proto:
     input: example.proto
     cmd: |
       mkdir -p pkg/proto/example
       protoc --go_out=. --go-grpc_out=. example.proto
     target: pkg/proto/example
+  client:
+    dependsOn:
+      - proto
+    input: |
+      client/
+      pkg/
+    cmd: |
+      mkdir -p build
+      go build -o build/client client/main.go
+    target: build/client
+  server:
+    dependsOn:
+      - proto
+    input: |
+      server/
+      pkg/
+    cmd: |
+      mkdir -p build
+      go build -o build/server server/main.go
+    target: build/server
